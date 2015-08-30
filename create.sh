@@ -5,6 +5,8 @@ VMTools="VmTools"
 D0Tools="Dom0Tools"
 DTMP="_dtmp"
 DURL="https://github.com/QubesOS/qubes-doc/archive/$ZIP"
+REFile="short-reference.md"
+RBScript="transform.rb"
 
 function clean() {
   if [[ -f "$ZIP" ]]
@@ -34,6 +36,11 @@ function clean() {
   fi
 }
 
+if [[ -f "$REFile" ]]
+then
+  rm "$REFile"
+fi
+
 clean
 
 wget -c "$DURL"
@@ -47,3 +54,15 @@ mkdir "$D0Tools"
 
 find "$VMTools$DTMP/" -name "*.md" -type f -print0 | xargs -0 -I {} mv {} -t "$VMTools"
 find "$D0Tools$DTMP/" -name "*.md" -type f -print0 | xargs -0 -I {} mv {} -t "$D0Tools"
+
+touch "$REFile"
+
+echo "# Dom0 Tools" >> "$REFile"
+
+find "$D0Tools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" {} >> "$REFile"
+
+echo "# VM Tools" >> "$REFile"
+
+find "$VMTools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" {} >> "$REFile"
+
+clean
