@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="dom0-tools">Dom0 Tools</h1>
+<h1 id="qvm-remove">qvm-remove</h1>
+<h2 id="name">NAME</h2>
+<p>qvm-remove - remove a VM</p>
+<h2 id="synopsis">SYNOPSIS</h2>
+<p>qvm-remove [options] &lt;vm-name&gt;</p>
+<h2 id="options">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-q, –quiet<br />Be quiet</p>
+<p>–just-db<br />Remove only from the Qubes Xen DB, do not remove any files</p>
+<p>–force-root<br />Force to run, even with root privileges</p>
+<h1 id="qvm-firewall">qvm-firewall</h1>
+<h2 id="name-1">NAME</h2>
+<p>qvm-firewall</p>
+<h2 id="synopsis-1">SYNOPSIS</h2>
+<p>qvm-firewall [-n] &lt;vm-name&gt; [action] [rule spec]</p>
+<p>Rule specification can be one of:<br />1. address|hostname[/netmask] tcp|udp port[-port] 2. address|hostname[/netmask] tcp|udp service_name 3. address|hostname[/netmask] any</p>
+<h2 id="options-1">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-l, –list<br />List firewall settings (default action)</p>
+<p>-a, –add<br />Add rule</p>
+<p>-d, –del<br />Remove rule (given by number or by rule spec)</p>
+<p>-P SET_POLICY, –policy=SET_POLICY<br />Set firewall policy (allow/deny)</p>
+<p>-i SET_ICMP, –icmp=SET_ICMP<br />Set ICMP access (allow/deny)</p>
+<p>-D SET_DNS, –dns=SET_DNS<br />Set DNS access (allow/deny)</p>
+<p>-Y SET_YUM_PROXY, –yum-proxy=SET_YUM_PROXY<br />Set access to Qubes yum proxy (allow/deny). <em>Note:</em> if set to “deny”, access will be rejected even if policy set to “allow”</p>
+<p>-n, –numeric<br />Display port numbers instead of services (makes sense only with –list)</p>
+<h1 id="qvm-create-default-dvm">qvm-create-default-dvm</h1>
+<h2 id="name-2">NAME</h2>
+<p>qvm-create-default-dvm - creates a default disposable VM</p>
+<h2 id="synopsis-2">SYNOPSIS</h2>
+<p>qvm-create-default-dvm templatename|–default-template|–used-template [script-name|–default-script]</p>
+<h2 id="options-2">OPTIONS</h2>
+<p>templatename<br />Base DispVM on given template. The command will create AppVM named after template with “-dvm” suffix. This VM will be used to create DispVM savefile. If you want to customize DispVM, use this VM - take a look at <a href="https://wiki.qubes-os.org/wiki/UserDoc/DispVMCustomization">https://wiki.qubes-os.org/wiki/UserDoc/DispVMCustomization</a></p>
+<p>–default-template<br />Use default template for the DispVM</p>
+<p>–used-template<br />Use the same template as earlier</p>
+<p>–default-script<br />Use default script for seeding DispVM home.</p>
+<h1 id="qvm-run">qvm-run</h1>
+<h2 id="name-3">NAME</h2>
+<p>qvm-run - run a command on a specified VM</p>
+<h2 id="synopsis-3">SYNOPSIS</h2>
+<p>qvm-run [options] [&lt;vm-name&gt;] [&lt;cmd&gt;]</p>
+<h2 id="options-3">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-q, –quiet<br />Be quiet</p>
+<p>-a, –auto<br />Auto start the VM if not running</p>
+<p>-u USER, –user=USER<br />Run command in a VM as a specified user</p>
+<p>–tray<br />Use tray notifications instead of stdout</p>
+<p>–all<br />Run command on all currently running VMs (or all paused, in case of –unpause)</p>
+<p>–exclude=EXCLUDE_LIST<br />When –all is used: exclude this VM name (might be repeated)</p>
+<p>–wait<br />Wait for the VM(s) to shutdown</p>
+<p>–shutdown<br />(deprecated) Do ‘xl shutdown’ for the VM(s) (can be combined this with –all and –wait)</p>
+<p>–pause<br />Do ‘xl pause’ for the VM(s) (can be combined this with –all and –wait)</p>
+<p>–unpause<br />Do ‘xl unpause’ for the VM(s) (can be combined this with –all and –wait)</p>
+<p>-p, –pass-io<br />Pass stdin/stdout/stderr from remote program</p>
+<p>–localcmd=LOCALCMD<br />With –pass-io, pass stdin/stdout/stderr to the given program</p>
+<p>–force<br />Force operation, even if may damage other VMs (eg. shutdown of NetVM)</p>
+<h1 id="qvm-ls">qvm-ls</h1>
+<h2 id="name-4">NAME</h2>
+<p>qvm-ls - list VMs and various information about their state</p>
+<h2 id="synopsis-4">SYNOPSIS</h2>
+<p>qvm-ls [options] &lt;vm-name&gt;</p>
+<h2 id="options-4">OPTIONS</h2>
+<p>-h, –help<br />Show help message and exit</p>
+<p>-n, –network<br />Show network addresses assigned to VMs</p>
+<p>-c, –cpu<br />Show CPU load</p>
+<p>-m, –mem<br />Show memory usage</p>
+<p>-d, –disk<br />Show VM disk utilization statistics</p>
+<p>-i, –ids<br />Show Qubes and Xen id</p>
+<p>-k, –kernel<br />Show VM kernel options</p>
+<p>-b, –last-backup<br />Show date of last VM backup</p>
+<p>–raw-list<br />List only VM names one per line</p>
+<h1 id="qvm-clone">qvm-clone</h1>
+<h2 id="name-5">NAME</h2>
+<p>qvm-clone - clones an existing VM by copying all its disk files</p>
+<h2 id="synopsis-5">SYNOPSIS</h2>
+<p>qvm-clone [options] &lt;src-name&gt; &lt;new-name&gt;</p>
+<h2 id="options-5">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-q, –quiet<br />Be quiet</p>
+<p>-p DIR_PATH, –path=DIR_PATH<br />Specify path to the template directory</p>
+<h1 id="qvm-prefs">qvm-prefs</h1>
+<h2 id="name-6">NAME</h2>
+<p>qvm-prefs - list/set various per-VM properties</p>
+<h2 id="synopsis-6">SYNOPSIS</h2>
+<p>qvm-prefs -l [options] &lt;vm-name&gt; qvm-prefs -g [options] &lt;vm-name&gt; &lt;property&gt; qvm-prefs -s [options] &lt;vm-name&gt; &lt;property&gt; […]</p>
+<h2 id="options-6">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-l, –list<br />List properties of a specified VM</p>
+<p>-g, –get<br />Get a single property of a specified VM</p>
+<p>-s, –set<br />Set properties of a specified VM</p>
+<h2 id="properties">PROPERTIES</h2>
+<p>include_in_backups<br />Accepted values: <code>True</code>, <code>False</code></p>
+<p>Control whenever this VM will be included in backups by default (for now works only in qubes-manager). You can always manually select or deselect any VM for backup.</p>
+<p>pcidevs<br />PCI devices assigned to the VM. Should be edited using qvm-pci tool.</p>
+<p>pci_strictreset<br />Accepted values: <code>True</code>, <code>False</code></p>
+<p>Control whether prevent assigning to VM a device which does not support any reset method. Generally such devices should not be assigned to any VM, because there will be no way to reset device state after VM shutdown, so the device could attack next VM to which it will be assigned. But in some cases it could make sense - for example when the VM to which it is assigned is trusted one, or is running all the time.</p>
+<p>label<br />Accepted values: <code>red</code>, <code>orange</code>, <code>yellow</code>, <code>green</code>, <code>gray</code>, <code>blue</code>, <code>purple</code>, <code>black</code></p>
+<p>Color of VM label (icon, appmenus, windows border). If VM is running, change will be applied at first VM restart.</p>
+<p>netvm<br />Accepted values: netvm name, <code>default</code>, <code>none</code></p>
+<p>To which NetVM connect. Setting to <code>default</code> will follow system-global default NetVM (managed by qubes-prefs). Setting to <code>none</code> will disable networking in this VM.</p>
+<p>dispvm_netvm<br />Accepted values: netvm name, <code>default</code>, <code>none</code></p>
+<p>Which NetVM should be used for Disposable VMs started by this one. <code>default</code> is to use the same NetVM as the VM itself.</p>
+<p>maxmem<br />Accepted values: memory size in MB</p>
+<p>Maximum memory size available for this VM. Dynamic memory management (aka qmemman) will not be able to balloon over this limit. For VMs with qmemman disabled, this will be overridden by <em>memory</em> property (at VM startup).</p>
+<p>memory<br />Accepted values: memory size in MB</p>
+<p>Initial memory size for VM. This should be large enough to allow VM startup - before qmemman starts managing memory for this VM. For VM with qmemman disabled, this is static memory size.</p>
+<p>kernel<br />Accepted values: kernel version, <code>default</code>, <code>none</code></p>
+<p>Kernel version to use (only for PV VMs). Available kernel versions will be listed when no value given (there are in /var/lib/qubes/vm-kernels). Setting to <code>default</code> will follow system-global default kernel (managed via qubes-prefs). Setting to <code>none</code> will use “kernels” subdir in VM directory - this allows having VM-specific kernel; also this the only case when /lib/modules is writable from within VM.</p>
+<p>template<br />Accepted values: TemplateVM name</p>
+<p>TemplateVM on which VM base. It can be changed only when VM isn’t running.</p>
+<p>vcpus<br />Accepted values: no of CPUs</p>
+<p>Number of CPU (cores) available to VM. Some VM types (eg DispVM) will not work properly with more than one CPU.</p>
+<p>kernelopts<br />Accepted values: string, <code>default</code></p>
+<p>VM kernel parameters (available only for PV VMs). This can be used to workaround some hardware specific problems (eg for NetVM). Setting to <code>default</code> will use some reasonable defaults (currently different for VMs with PCI devices and without). For VM without PCI devices <code>default</code> option means inherit this value from the VM template (if any). Some helpful options (for debugging purposes): <code>earlyprintk=xen</code>, <code>init=/bin/bash</code></p>
+<p>name<br />Accepted values: alphanumerical name</p>
+<p>Name of the VM. Can be only changed when VM isn’t running.</p>
+<p>drive<br />Accepted values: [hd:|cdrom:][backend-vm:]path</p>
+<p>Additional drive for the VM (available only for HVMs). This can be used to attach installation image. <code>path</code> can be file or physical device (eg. /dev/sr0). The same syntax can be used in qvm-start –drive - to attach drive only temporarily.</p>
+<p>mac<br />Accepted values: MAC address, <code>auto</code></p>
+<p>Can be used to force specific of virtual ethernet card in the VM. Setting to <code>auto</code> will use automatic-generated MAC - based on VM id. Especially useful when some licencing depending on static MAC address. For template-based HVM <code>auto</code> mode means to clone template MAC.</p>
+<p>default_user<br />Accepted values: username</p>
+<p>Default user used by qvm-run. Note that it make sense only on non-standard template, as the standard one always have “user” account.</p>
+<p>debug<br />Accepted values: <code>on</code>, <code>off</code></p>
+<p>Enables debug mode for VM. This can be used to turn on/off verbose logging in many qubes components at once (gui virtualization, VM kernel, some other services). For template-based HVM, enabling debug mode also disables automatic reset root.img (actually volatile.img) before each VM startup, so changes made to root filesystem stays intact. To force reset root.img when debug mode enabled, either change something in the template (simple start+stop will do, even touch its root.img is enough), or remove VM’s volatile.img (check the path with qvm-prefs).</p>
+<p>qrexec_installed<br />Accepted values: <code>True</code>, <code>False</code></p>
+<p>This HVM have qrexec agent installed. When VM have qrexec agent installed, one can use qvm-run to start VM process, VM will benefit from Qubes RPC services (like file copy, or inter-vm clipboard). This option will be automatically turned on during Qubes Windows Tools installation, but if you install qrexec agent in some other OS, you need to turn this option on manually.</p>
+<p>guiagent_installed<br />Accepted values: <code>True</code>, <code>False</code></p>
+<p>This HVM have gui agent installed. This option disables full screen GUI virtualization and enables per-window seemless GUI mode. This option will be automatically turned on during Qubes Windows Tools installation, but if you install qubes gui agent in some other OS, you need to turn this option on manually. You can turn this option off to troubleshoot some early HVM OS boot problems (enter safe mode etc), but the option will be automatically enabled at first VM normal startup (and will take effect from the next startup).</p>
+<p><em>Notice:</em> when Windows GUI agent is installed in the VM, SVGA device (used to full screen video) is disabled, so even if you disable this option, you will not get functional full desktop access (on normal VM startup). Use some other means for that (VNC, RDP or so).</p>
+<p>autostart<br />Accepted values: <code>True</code>, <code>False</code></p>
+<p>Start the VM during system startup. The default netvm is autostarted regardless of this setting.</p>
+<p>timezone<br />Accepted values: <code>localtime</code>, time offset in seconds</p>
+<p>Set emulated HVM clock timezone. Use <code>localtime</code> (the default) to use the same time as dom0 have. Note that HVM will get only clock value, not the timezone itself, so if you use <code>localtime</code> setting, OS inside of HVM should also be configured to treat hardware clock as local time (and have proper timezone set).</p>
+<h1 id="qvm-shutdown">qvm-shutdown</h1>
+<h2 id="name-7">NAME</h2>
+<p>qvm-shutdown</p>
+<h2 id="synopsis-7">SYNOPSIS</h2>
+<p>qvm-shutdown [options] &lt;vm-name&gt;</p>
+<h2 id="options-7">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-q, –quiet<br />Be quiet</p>
+<p>–force<br />Force operation, even if may damage other VMs (eg. shutdown of NetVM)</p>
+<p>–wait<br />Wait for the VM(s) to shutdown</p>
+<p>–all<br />Shutdown all running VMs</p>
+<p>–exclude=EXCLUDE_LIST<br />When –all is used: exclude this VM name (might be repeated)</p>
+<h1 id="qvm-template-commit">qvm-template-commit</h1>
+<h2 id="name-8">NAME</h2>
+<p>qvm-template-commit</p>
+<h2 id="synopsis-8">SYNOPSIS</h2>
+<p>qvm-template-commit [options] &lt;vm-name&gt;</p>
+<h2 id="options-8">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<h1 id="qvm-block">qvm-block</h1>
+<h2 id="name-9">NAME</h2>
+<p>qvm-block - list/set VM PCI devices.</p>
+<h2 id="synopsis-9">SYNOPSIS</h2>
+<p>qvm-block -l [options] qvm-block -a [options] &lt;device&gt; &lt;vm-name&gt; qvm-block -d [options] &lt;device&gt; qvm-block -d [options] &lt;vm-name&gt;</p>
+<h2 id="options-9">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-l, –list<br />List block devices</p>
+<p>-a, –attach<br />Attach block device to specified VM</p>
+<p>-d, –detach<br />Detach block device</p>
+<p>-f FRONTEND, –frontend=FRONTEND<br />Specify device name at destination VM [default: xvdi]</p>
+<p>–ro<br />Force read-only mode</p>
+<p>–no-auto-detach<br />Fail when device already connected to other VM</p>
+<h1 id="qvm-backup">qvm-backup</h1>
+<h2 id="name-10">NAME</h2>
+<p>qvm-backup</p>
+<h2 id="synopsis-10">SYNOPSIS</h2>
+<p>qvm-backup [options] &lt;backup-dir-path&gt;</p>
+<h2 id="options-10">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-x EXCLUDE_LIST, –exclude=EXCLUDE_LIST<br />Exclude the specified VM from backup (might be repeated)</p>
+<h1 id="qvm-pci">qvm-pci</h1>
+<h2 id="name-11">NAME</h2>
+<p>qvm-pci - list/set VM PCI devices</p>
+<h2 id="synopsis-11">SYNOPSIS</h2>
+<p>qvm-pci -l [options] &lt;vm-name&gt; qvm-pci -a [options] &lt;vm-name&gt; &lt;device&gt; qvm-pci -d [options] &lt;vm-name&gt; &lt;device&gt;</p>
+<h2 id="options-11">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-l, –list<br />List VM PCI devices</p>
+<p>-a, –add<br />Add a PCI device to specified VM</p>
+<p>-d, –delete<br />Remove a PCI device from specified VM</p>
+<h1 id="qubes-prefs">qubes-prefs</h1>
+<h2 id="name-12">NAME</h2>
+<p>qubes-prefs - display system-wide Qubes settings, such as:</p>
+<ul>
+<li>clock VM</li>
+<li>update VM</li>
+<li>default template</li>
+<li>default firewallVM</li>
+<li>default kernel</li>
+<li>default netVM</li>
+</ul>
+<h2 id="synopsis-12">SYNOPSIS</h2>
+<p>qubes-prefs</p>
+<h1 id="qvm-sync-appmenus">qvm-sync-appmenus</h1>
+<h2 id="name-13">NAME</h2>
+<p>qvm-sync-appmenus - updates desktop file templates for given StandaloneVM or TemplateVM</p>
+<h2 id="synopsis-13">SYNOPSIS</h2>
+<p>qvm-sync-appmenus [options] &lt;vm-name&gt;</p>
+<h2 id="options-12">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-v, –verbose<br />Run in verbose mode</p>
+<h1 id="qvm-start">qvm-start</h1>
+<h2 id="name-14">NAME</h2>
+<p>qvm-start - start a specified VM</p>
+<h2 id="synopsis-14">SYNOPSIS</h2>
+<p>qvm-start [options] &lt;vm-name&gt;</p>
+<h2 id="options-13">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-q, –quiet<br />Be quiet</p>
+<p>–no-guid<br />Do not start the GUId (ignored)</p>
+<p>–console<br />Attach debugging console to the newly started VM</p>
+<p>–dvm<br />Do actions necessary when preparing DVM image</p>
+<p>–custom-config=CUSTOM_CONFIG<br />Use custom Xen config instead of Qubes-generated one</p>
+<h1 id="qubes-dom0-update">qubes-dom0-update</h1>
+<h2 id="name-15">NAME</h2>
+<p>qubes-dom0-update - update software in dom0</p>
+<h2 id="synopsis-15">SYNOPSIS</h2>
+<p>qubes-dom0-update [–clean] [–check-only] [–gui] [&lt;yum opts&gt;] [&lt;pkg list&gt;]</p>
+<h2 id="options-14">OPTIONS</h2>
+<p>–clean<br />Clean yum cache before doing anything</p>
+<p>–check-only<br />Only check for updates (no install)</p>
+<p>–gui<br />Use gpk-update-viewer for update selection</p>
+<p>&lt;pkg list&gt;<br />Download (and install if run by root) new packages in dom0 instead of updating</p>
+<p>Besides above options, when no –gui or –check-only given, all other options are passed to yum call. So for example –enablerepo/–disablerepo options works as well.</p>
+<h1 id="qvm-revert-template-changes">qvm-revert-template-changes</h1>
+<h2 id="name-16">NAME</h2>
+<p>qvm-revert-template-changes</p>
+<h2 id="synopsis-16">SYNOPSIS</h2>
+<p>qvm-revert-template-changes [options] &lt;template-name&gt;</p>
+<h2 id="options-15">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>–force<br />Do not prompt for comfirmation</p>
+<h1 id="qvm-service">qvm-service</h1>
+<h2 id="name-17">NAME</h2>
+<p>qvm-service - manage (Qubes-specific) services started in VM</p>
+<h2 id="synopsis-17">SYNOPSIS</h2>
+<p>qvm-service [-l] &lt;vmname&gt; qvm-service [-e|-d|-D] &lt;vmname&gt; &lt;service&gt;</p>
+<h2 id="options-16">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-l, –list<br />List services (default action)</p>
+<p>-e, –enable<br />Enable service</p>
+<p>-d, –disable<br />Disable service</p>
+<p>-D, –default<br />Reset service to its default state (remove from the list). Default state means “lets VM choose” and can depend on VM type (NetVM, AppVM etc).</p>
+<h2 id="supported-services">SUPPORTED SERVICES</h2>
+<p>This list can be incomplete as VM can implement any additional service without knowlege of qubes-core code.</p>
+<p>meminfo-writer<br />Default: enabled everywhere excluding NetVM</p>
+<p>This service reports VM memory usage to dom0, which effectively enables dynamic memory management for the VM.</p>
+<p><em>Note:</em> this service is enforced to be set by dom0 code. If you try to remove it (reset to defult state), will be recreated with the rule: enabled if VM have no PCI devices assigned, otherwise disabled.</p>
+<p>qubes-dvm<br />Default: disabled</p>
+<p>Used internally when creating DispVM savefile.</p>
+<p>qubes-firewall<br />Default: enabled only in ProxyVM</p>
+<p>Dynamic firewall manager, based on settings in dom0 (qvm-firewall, firewall tab in qubes-manager). This service is not supported in netvms.</p>
+<p>qubes-network<br />Default: enabled only in NetVM and ProxyVM</p>
+<p>Expose network for other VMs. This includes enabling network forwarding, MASQUERADE, DNS redirection and basic firewall.</p>
+<p>qubes-netwatcher<br />Default: enabled only in ProxyVM</p>
+<p>Monitor IP change notification from NetVM. When received, reload qubes-firewall service (to force DNS resolution). This service makes sense only with qubes-firewall enabled.</p>
+<p>qubes-update-check<br />Default: enabled</p>
+<p>Notify dom0 about updates available for this VM. This is shown in qubes-manager as ‘update-pending’ flag.</p>
+<p>cups<br />Default: enabled only in AppVM</p>
+<p>Enable CUPS service. The user can disable cups in VM which do not need printing to speed up booting.</p>
+<p>cron<br />Default: disabled</p>
+<p>Enable CRON service.</p>
+<p>network-manager<br />Default: enabled in NetVM</p>
+<p>Enable NetworkManager. Only VM with direct access to network device needs this service, but can be useful in ProxyVM to ease VPN setup.</p>
+<p>ntpd<br />Default: disabled</p>
+<p>Enable NTPD service. By default Qubes calls ntpdate every 6 minutes in selected VM (aka ClockVM), then propagate the result using qrexec calls. Enabling ntpd <em>do not</em> disable this behaviour.</p>
+<p>qubes-yum-proxy<br />Deprecated name for qubes-updates-proxy.</p>
+<p>qubes-updates-proxy<br />Default: enabled in NetVM</p>
+<p>Provide proxy service, which allow access only to yum repos. Filtering is done based on URLs, so it shouldn’t be used as leak control (pretty easy to bypass), but is enough to prevent some erroneous user actions.</p>
+<p>yum-proxy-setup<br />Deprecated name for updates-proxy-setup.</p>
+<p>updates-proxy-setup<br />Default: enabled in AppVM (also in templates)</p>
+<p>Setup yum at startup to use qubes-yum-proxy service.</p>
+<p><em>Note:</em> this service is automatically enabled when you allow VM to access yum proxy (in firewall settings) and disabled when you deny access to yum proxy.</p>
+<p>disable-default-route<br />Default: disabled</p>
+<p>Disables the default route for networking. Enabling this service will prevent the creation of the default route, but the VM will still be able to reach it’s direct neighbors. The functionality is implemented in /usr/lib/qubes/setup-ip.</p>
+<p>disable-dns-server<br />Default: disabled</p>
+<p>Enabling this service will result in an empty /etc/resolv.conf. The functionality is implemented in /usr/lib/qubes/setup-ip.</p>
+<h1 id="qvm-backup-restore">qvm-backup-restore</h1>
+<h2 id="name-18">NAME</h2>
+<p>qvm-backup-restore - restores Qubes VMs from backup</p>
+<h2 id="synopsis-18">SYNOPSIS</h2>
+<p>qvm-backup-restore [options] &lt;backup-dir&gt;</p>
+<h2 id="options-17">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>–skip-broken<br />Do not restore VMs that have missing templates or netvms</p>
+<p>–ignore-missing<br />Ignore missing templates or netvms, restore VMs anyway</p>
+<p>–skip-conflicting<br />Do not restore VMs that are already present on the host</p>
+<p>–force-root<br />Force to run, even with root privileges</p>
+<p>–replace-template=REPLACE_TEMPLATE<br />Restore VMs using another template, syntax: old-template-name:new-template-name (might be repeated)</p>
+<p>-x EXCLUDE, –exclude=EXCLUDE<br />Skip restore of specified VM (might be repeated)</p>
+<p>–skip-dom0-home<br />Do not restore dom0 user home dir</p>
+<p>–ignore-username-mismatch<br />Ignore dom0 username mismatch while restoring homedir</p>
+<h1 id="qvm-add-appvm">qvm-add-appvm</h1>
+<h2 id="name-19">NAME</h2>
+<p>qvm-add-appvm - add an already installed appvm to the Qubes DB</p>
+<p>WARNING: Noramlly you would not need this command, and you would use qvm-create instead!</p>
+<h2 id="synopsis-19">SYNOPSIS</h2>
+<p>qvm-add-appvm [options] &lt;appvm-name&gt; &lt;vm-template-name&gt;</p>
+<h2 id="options-18">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-p DIR_PATH, –path=DIR_PATH<br />Specify path to the template directory</p>
+<p>-c CONF_FILE, –conf=CONF_FILE<br />Specify the Xen VM .conf file to use(relative to the template dir path)</p>
+<h1 id="qvm-add-template">qvm-add-template</h1>
+<h2 id="name-20">NAME</h2>
+<p>qvm-add-template - adds an already installed template to the Qubes DB</p>
+<h2 id="synopsis-20">SYNOPSIS</h2>
+<p>qvm-add-template [options] &lt;vm-template-name&gt;</p>
+<h2 id="options-19">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-p DIR_PATH, –path=DIR_PATH<br />Specify path to the template directory</p>
+<p>-c CONF_FILE, –conf=CONF_FILE<br />Specify the Xen VM .conf file to use(relative to the template dir path)</p>
+<p>–rpm<br />Template files have been installed by RPM</p>
+<h1 id="qvm-kill">qvm-kill</h1>
+<h2 id="name-21">NAME</h2>
+<p>qvm-kill - kills the specified VM</p>
+<h2 id="synopsis-21">SYNOPSIS</h2>
+<p>qvm-kill [options] &lt;vm-name&gt;</p>
+<h2 id="options-20">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<h1 id="qvm-create">qvm-create</h1>
+<h2 id="name-22">NAME</h2>
+<p>qvm-create - creates a new VM</p>
+<h2 id="synopsis-22">SYNOPSIS</h2>
+<p>qvm-create [options] &lt;vm-name&gt;</p>
+<h2 id="options-21">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<p>-t TEMPLATE, –template=TEMPLATE<br />Specify the TemplateVM to use</p>
+<p>-l LABEL, –label=LABEL<br />Specify the label to use for the new VM (e.g. red, yellow, green, …)</p>
+<p>-p, –proxy<br />Create ProxyVM</p>
+<p>-n, –net<br />Create NetVM</p>
+<p>-H, –hvm<br />Create HVM (standalone, unless –template option used)</p>
+<p>–hvm-template<br />Create HVM template</p>
+<p>-R ROOT_MOVE, –root-move-from=ROOT_MOVE<br />Use provided root.img instead of default/empty one (file will be MOVED)</p>
+<p>-r ROOT_COPY, –root-copy-from=ROOT_COPY<br />Use provided root.img instead of default/empty one (file will be COPIED)</p>
+<p>-s, –standalone<br />Create standalone VM - independent of template</p>
+<p>-m MEM, –mem=MEM<br />Initial memory size (in MB)</p>
+<p>-c VCPUS, –vcpus=VCPUS<br />VCPUs count</p>
+<p>-i, –internal<br />Create VM for internal use only (hidden in qubes-manager, no appmenus)</p>
+<p>–force-root<br />Force to run, even with root privileges</p>
+<p>-q, –quiet<br />Be quiet</p>
+<h1 id="qvm-grow-private">qvm-grow-private</h1>
+<h2 id="name-23">NAME</h2>
+<p>qvm-grow-private - increase private storage capacity of a specified VM</p>
+<h2 id="synopsis-23">SYNOPSIS</h2>
+<p>qvm-grow-private &lt;vm-name&gt; &lt;size&gt;</p>
+<h2 id="options-22">OPTIONS</h2>
+<p>-h, –help<br />Show this help message and exit</p>
+<h1 id="vm-tools">VM Tools</h1>
+<h1 id="qvm-run-1">qvm-run</h1>
+<h2 id="name-24">NAME</h2>
+<p>qvm-run - run a specified command in a specified VM</p>
+<h2 id="synopsis-24">SYNOPSIS</h2>
+<p>qvm-run vmname command [aguments]</p>
+<h2 id="options-23">OPTIONS</h2>
+<p>–dispvm<br />Pass this option instead of vmname to start new DisposableVM</p>
+<h1 id="qvm-open-in-vm">qvm-open-in-vm</h1>
+<h2 id="name-25">NAME</h2>
+<p>qvm-open-in-vm - open a specified file in other VM</p>
+<h2 id="synopsis-25">SYNOPSIS</h2>
+<p>qvm-open-in-vm vmname filename</p>
+<h2 id="options-24">OPTIONS</h2>
+<h1 id="qvm-open-in-dvm">qvm-open-in-dvm</h1>
+<h2 id="name-26">NAME</h2>
+<p>qvm-open-in-dvm - open a specified file in disposable VM</p>
+<h2 id="synopsis-26">SYNOPSIS</h2>
+<p>qvm-open-in-dvm filename</p>
+<h2 id="options-25">OPTIONS</h2>
+<h1 id="qvm-copy-to-vm">qvm-copy-to-vm</h1>
+<h2 id="name-27">NAME</h2>
+<p>qvm-copy-to-vm - copy specified files to specified destination VM</p>
+<h2 id="synopsis-27">SYNOPSIS</h2>
+<p>qvm-copy-to-vm [–without-progress] dest_vmname file [file]+</p>
+<h2 id="options-26">OPTIONS</h2>
+<p>–without-progress<br />Don’t display progress info</p>
+</body>
+</html>

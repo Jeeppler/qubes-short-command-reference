@@ -5,8 +5,11 @@ VMTools="VmTools"
 D0Tools="Dom0Tools"
 DTMP="_dtmp"
 DURL="https://github.com/QubesOS/qubes-doc/archive/$ZIP"
-REFile="short-reference.md"
+REName="short-reference"
+REExt="md"
+REFile="$REName.$RExt"
 RBScript="transform.rb"
+GENScript="generate.sh"
 
 function clean() {
   if [[ -f "$ZIP" ]]
@@ -64,5 +67,7 @@ find "$D0Tools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" 
 echo "# VM Tools" >> "$REFile"
 
 find "$VMTools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" {} >> "$REFile"
+
+source "$GENScript" "$REFile" "$REName"
 
 clean
