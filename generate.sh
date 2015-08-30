@@ -9,5 +9,5 @@ pandoc "$INPUT_MD" -s -o "$OUTPUT".pdf
 # outputs a HTML (HTML5) file
 pandoc "$INPUT_MD" -s -S -t html5 -o "$OUTPUT".html
 
-# outputs a  plain text
+# outputs a plain text
 pandoc "$INPUT_MD" -s -S -t plain -o "$OUTPUT".txt
