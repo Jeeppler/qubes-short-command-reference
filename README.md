@@ -22,15 +22,17 @@ Pandoc can generate different files from one [markdown](http://daringfireball.ne
 
 ```bash
 # outputs a PDF file
-pandoc short-reference.md -s -o short-reference.pdf
+pandoc metadata.yaml short-reference.md -s -o short-reference.pdf
 
 # outputs a HTML (HTML5) file
-pandoc short-reference.md -s -S -t html5 -o short-reference.html
+pandoc metadata.yaml short-reference.md -s -S -t html5 -o short-reference.html
 
 # outputs a plain text
 pandoc short-reference.md -s -S -t plain -o short-reference.txt
 ```
 
 `short-reference.md` is the input file and `short-reference.xxx` the output file.
+
+`metadata.yaml` contains some additional metadata information for the PDF and HTML generation.
 
 Pandoc is furthermore able to generate files for asciidoc, odt, docx, textile and many more. Please have a look at [Pandoc Demos](http://pandoc.org/demos.html).
