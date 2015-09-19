@@ -39,6 +39,26 @@ function clean() {
   fi
 }
 
+function unpackAndMove() {
+  tools="$1"
+
+  unzip  "$ZIP" "*/$tools/*" -d "$tools$DTMP"
+
+  mkdir "$tools"
+
+  find "$tools$DTMP/" -name "*.md" -type f -print0 | xargs -0 -I {} mv {} -t "$tools"
+}
+
+function addToReference() {
+  title="$1"
+  tools="$2"
+
+  echo "$title" >> "$REFile"
+
+  #TODO sort the documents alphabetically 
+  find "$tools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" {} >> "$REFile"
+}
+
 if [[ -f "$REFile" ]]
 then
   rm "$REFile"
@@ -48,25 +68,13 @@ clean
 
 wget -c "$DURL"
 
-#two times the same thing make function
-unzip  "$ZIP" "*/$VMTools/*" -d "$VMTools$DTMP"
-unzip  "$ZIP" "*/$D0Tools/*" -d "$D0Tools$DTMP"
-
-mkdir "$VMTools"
-mkdir "$D0Tools"
-
-find "$VMTools$DTMP/" -name "*.md" -type f -print0 | xargs -0 -I {} mv {} -t "$VMTools"
-find "$D0Tools$DTMP/" -name "*.md" -type f -print0 | xargs -0 -I {} mv {} -t "$D0Tools"
+unpackAndMove "$VMTools"
+unpackAndMove "$D0Tools"
 
 touch "$REFile"
 
-echo "# Dom0 Tools" >> "$REFile"
-
-find "$D0Tools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" {} >> "$REFile"
-
-echo "# VM Tools" >> "$REFile"
-
-find "$VMTools/" -name "*.md" -type f -print0 | xargs -0 -I {} ruby "$RBScript" {} >> "$REFile"
+addToReference "# Dom0 Tools" "$D0Tools"
+addToReference "# VM Tools" "$VMTools"
 
 source "$GENScript" "$REFile" "$REName"
 
