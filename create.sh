@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
 ZIP="master.zip"
-VMTools="VmTools"
-D0Tools="Dom0Tools"
+VMTools="vm-tools"
+D0Tools="dom0-tools"
 DTMP="_dtmp"
 DURL="https://github.com/QubesOS/qubes-doc/archive/$ZIP"
 REName="short-reference"

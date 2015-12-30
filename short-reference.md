@@ -1,112 +1,5 @@
 # Dom0 Tools
 
-qvm-remove
-==========
-
-NAME
-----
-
-qvm-remove - remove a VM
-
-SYNOPSIS
---------
-
-qvm-remove [options] \<vm-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
--q, --quiet  
-Be quiet
-
---just-db  
-Remove only from the Qubes Xen DB, do not remove any files
-
---force-root  
-Force to run, even with root privileges
-
-
-qvm-firewall
-============
-
-NAME
-----
-
-qvm-firewall
-
-SYNOPSIS
---------
-
-qvm-firewall [-n] \<vm-name\> [action] [rule spec]
-
-Rule specification can be one of:  
-1.  address|hostname[/netmask] tcp|udp port[-port]
-2.  address|hostname[/netmask] tcp|udp service\_name
-3.  address|hostname[/netmask] any
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
--l, --list  
-List firewall settings (default action)
-
--a, --add  
-Add rule
-
--d, --del  
-Remove rule (given by number or by rule spec)
-
--P SET\_POLICY, --policy=SET\_POLICY  
-Set firewall policy (allow/deny)
-
--i SET\_ICMP, --icmp=SET\_ICMP  
-Set ICMP access (allow/deny)
-
--D SET\_DNS, --dns=SET\_DNS  
-Set DNS access (allow/deny)
-
--Y SET\_YUM\_PROXY, --yum-proxy=SET\_YUM\_PROXY  
-Set access to Qubes yum proxy (allow/deny). *Note:* if set to "deny", access will be rejected even if policy set to "allow"
-
--n, --numeric  
-Display port numbers instead of services (makes sense only with --list)
-
-
-qvm-create-default-dvm
-======================
-
-NAME
-----
-
-qvm-create-default-dvm - creates a default disposable VM
-
-SYNOPSIS
---------
-
-qvm-create-default-dvm templatename|--default-template|--used-template [script-name|--default-script]
-
-OPTIONS
--------
-
-templatename  
-Base DispVM on given template. The command will create AppVM named after template with "-dvm" suffix. This VM will be used to create DispVM savefile. If you want to customize DispVM, use this VM - take a look at <https://wiki.qubes-os.org/wiki/UserDoc/DispVMCustomization>
-
---default-template  
-Use default template for the DispVM
-
---used-template  
-Use the same template as earlier
-
---default-script  
-Use default script for seeding DispVM home.
-
-
 qvm-run
 =======
 
@@ -166,6 +59,212 @@ With --pass-io, pass stdin/stdout/stderr to the given program
 Force operation, even if may damage other VMs (eg. shutdown of NetVM)
 
 
+qvm-revert-template-changes
+===========================
+
+NAME
+----
+
+qvm-revert-template-changes
+
+SYNOPSIS
+--------
+
+qvm-revert-template-changes [options] \<template-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+--force  
+Do not prompt for comfirmation
+
+
+qvm-kill
+========
+
+NAME
+----
+
+qvm-kill - kills the specified VM
+
+SYNOPSIS
+--------
+
+qvm-kill [options] \<vm-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+
+qvm-start
+=========
+
+NAME
+----
+
+qvm-start - start a specified VM
+
+SYNOPSIS
+--------
+
+qvm-start [options] \<vm-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+-q, --quiet  
+Be quiet
+
+--no-guid  
+Do not start the GUId (ignored)
+
+--console  
+Attach debugging console to the newly started VM
+
+--dvm  
+Do actions necessary when preparing DVM image
+
+--custom-config=CUSTOM\_CONFIG  
+Use custom Xen config instead of Qubes-generated one
+
+
+qvm-remove
+==========
+
+NAME
+----
+
+qvm-remove - remove a VM
+
+SYNOPSIS
+--------
+
+qvm-remove [options] \<vm-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+-q, --quiet  
+Be quiet
+
+--just-db  
+Remove only from the Qubes Xen DB, do not remove any files
+
+--force-root  
+Force to run, even with root privileges
+
+
+qvm-clone
+=========
+
+NAME
+----
+
+qvm-clone - clones an existing VM by copying all its disk files
+
+SYNOPSIS
+--------
+
+qvm-clone [options] \<src-name\> \<new-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+-q, --quiet  
+Be quiet
+
+-p DIR\_PATH, --path=DIR\_PATH  
+Specify path to the template directory
+
+
+qvm-create-default-dvm
+======================
+
+NAME
+----
+
+qvm-create-default-dvm - creates a default disposable VM
+
+SYNOPSIS
+--------
+
+qvm-create-default-dvm templatename|--default-template|--used-template [script-name|--default-script]
+
+OPTIONS
+-------
+
+templatename  
+Base DispVM on given template. The command will create AppVM named after template with "-dvm" suffix. This VM will be used to create DispVM savefile. If you want to customize DispVM, use this VM - take a look at <https://wiki.qubes-os.org/wiki/UserDoc/DispVMCustomization>
+
+--default-template  
+Use default template for the DispVM
+
+--used-template  
+Use the same template as earlier
+
+--default-script  
+Use default script for seeding DispVM home.
+
+
+qvm-backup-restore
+==================
+
+NAME
+----
+
+qvm-backup-restore - restores Qubes VMs from backup
+
+SYNOPSIS
+--------
+
+qvm-backup-restore [options] \<backup-dir\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+--skip-broken  
+Do not restore VMs that have missing templates or netvms
+
+--ignore-missing  
+Ignore missing templates or netvms, restore VMs anyway
+
+--skip-conflicting  
+Do not restore VMs that are already present on the host
+
+--force-root  
+Force to run, even with root privileges
+
+--replace-template=REPLACE\_TEMPLATE  
+Restore VMs using another template, syntax: old-template-name:new-template-name (might be repeated)
+
+-x EXCLUDE, --exclude=EXCLUDE  
+Skip restore of specified VM (might be repeated)
+
+--skip-dom0-home  
+Do not restore dom0 user home dir
+
+--ignore-username-mismatch  
+Ignore dom0 username mismatch while restoring homedir
+
+
 qvm-ls
 ======
 
@@ -210,18 +309,159 @@ Show date of last VM backup
 List only VM names one per line
 
 
-qvm-clone
-=========
+qvm-add-template
+================
 
 NAME
 ----
 
-qvm-clone - clones an existing VM by copying all its disk files
+qvm-add-template - adds an already installed template to the Qubes DB
 
 SYNOPSIS
 --------
 
-qvm-clone [options] \<src-name\> \<new-name\>
+qvm-add-template [options] \<vm-template-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+-p DIR\_PATH, --path=DIR\_PATH  
+Specify path to the template directory
+
+-c CONF\_FILE, --conf=CONF\_FILE  
+Specify the Xen VM .conf file to use(relative to the template dir path)
+
+--rpm  
+Template files have been installed by RPM
+
+
+qvm-grow-private
+================
+
+NAME
+----
+
+qvm-grow-private - increase private storage capacity of a specified VM
+
+SYNOPSIS
+--------
+
+qvm-grow-private \<vm-name\> \<size\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+
+qvm-firewall
+============
+
+NAME
+----
+
+qvm-firewall
+
+SYNOPSIS
+--------
+
+qvm-firewall [-n] \<vm-name\> [action] [rule spec]
+
+Rule specification can be one of:  
+1.  address|hostname[/netmask] tcp|udp port[-port]
+2.  address|hostname[/netmask] tcp|udp service\_name
+3.  address|hostname[/netmask] any
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+-l, --list  
+List firewall settings (default action)
+
+-a, --add  
+Add rule
+
+-d, --del  
+Remove rule (given by number or by rule spec)
+
+-P SET\_POLICY, --policy=SET\_POLICY  
+Set firewall policy (allow/deny)
+
+-i SET\_ICMP, --icmp=SET\_ICMP  
+Set ICMP access (allow/deny)
+
+-D SET\_DNS, --dns=SET\_DNS  
+Set DNS access (allow/deny)
+
+-Y SET\_YUM\_PROXY, --yum-proxy=SET\_YUM\_PROXY  
+Set access to Qubes yum proxy (allow/deny). *Note:* if set to "deny", access will be rejected even if policy set to "allow"
+
+-n, --numeric  
+Display port numbers instead of services (makes sense only with --list)
+
+
+qvm-backup
+==========
+
+NAME
+----
+
+qvm-backup
+
+SYNOPSIS
+--------
+
+qvm-backup [options] \<backup-dir-path\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+-x EXCLUDE\_LIST, --exclude=EXCLUDE\_LIST  
+Exclude the specified VM from backup (might be repeated)
+
+
+qvm-template-commit
+===================
+
+NAME
+----
+
+qvm-template-commit
+
+SYNOPSIS
+--------
+
+qvm-template-commit [options] \<vm-name\>
+
+OPTIONS
+-------
+
+-h, --help  
+Show this help message and exit
+
+
+qvm-shutdown
+============
+
+NAME
+----
+
+qvm-shutdown
+
+SYNOPSIS
+--------
+
+qvm-shutdown [options] \<vm-name\>
 
 OPTIONS
 -------
@@ -232,8 +472,17 @@ Show this help message and exit
 -q, --quiet  
 Be quiet
 
--p DIR\_PATH, --path=DIR\_PATH  
-Specify path to the template directory
+--force  
+Force operation, even if may damage other VMs (eg. shutdown of NetVM)
+
+--wait  
+Wait for the VM(s) to shutdown
+
+--all  
+Shutdown all running VMs
+
+--exclude=EXCLUDE\_LIST  
+When --all is used: exclude this VM name (might be repeated)
 
 
 qvm-prefs
@@ -375,18 +624,20 @@ Accepted values: `localtime`, time offset in seconds
 Set emulated HVM clock timezone. Use `localtime` (the default) to use the same time as dom0 have. Note that HVM will get only clock value, not the timezone itself, so if you use `localtime` setting, OS inside of HVM should also be configured to treat hardware clock as local time (and have proper timezone set).
 
 
-qvm-shutdown
-============
+qvm-add-appvm
+=============
 
 NAME
 ----
 
-qvm-shutdown
+qvm-add-appvm - add an already installed appvm to the Qubes DB
+
+WARNING: Noramlly you would not need this command, and you would use qvm-create instead!
 
 SYNOPSIS
 --------
 
-qvm-shutdown [options] \<vm-name\>
+qvm-add-appvm [options] \<appvm-name\> \<vm-template-name\>
 
 OPTIONS
 -------
@@ -394,40 +645,73 @@ OPTIONS
 -h, --help  
 Show this help message and exit
 
--q, --quiet  
-Be quiet
+-p DIR\_PATH, --path=DIR\_PATH  
+Specify path to the template directory
 
---force  
-Force operation, even if may damage other VMs (eg. shutdown of NetVM)
-
---wait  
-Wait for the VM(s) to shutdown
-
---all  
-Shutdown all running VMs
-
---exclude=EXCLUDE\_LIST  
-When --all is used: exclude this VM name (might be repeated)
+-c CONF\_FILE, --conf=CONF\_FILE  
+Specify the Xen VM .conf file to use(relative to the template dir path)
 
 
-qvm-template-commit
-===================
+qvm-pci
+=======
 
 NAME
 ----
 
-qvm-template-commit
+qvm-pci - list/set VM PCI devices
 
 SYNOPSIS
 --------
 
-qvm-template-commit [options] \<vm-name\>
+qvm-pci -l [options] \<vm-name\>
+qvm-pci -a [options] \<vm-name\> \<device\>
+qvm-pci -d [options] \<vm-name\> \<device\>
 
 OPTIONS
 -------
 
 -h, --help  
 Show this help message and exit
+
+-l, --list  
+List VM PCI devices
+
+-a, --add  
+Add a PCI device to specified VM
+
+-d, --delete  
+Remove a PCI device from specified VM
+
+
+qubes-dom0-update
+=================
+
+NAME
+----
+
+qubes-dom0-update - update software in dom0
+
+SYNOPSIS
+--------
+
+qubes-dom0-update [--clean] [--check-only] [--gui] [\<yum opts\>] [\<pkg list\>]
+
+OPTIONS
+-------
+
+--clean  
+Clean yum cache before doing anything
+
+--check-only  
+Only check for updates (no install)
+
+--gui  
+Use gpk-update-viewer for update selection
+
+\<pkg list\>  
+Download (and install if run by root) new packages in dom0 instead of updating
+
+Besides above options, when no --gui or --check-only given, all other options are passed to yum call. So for example --enablerepo/--disablerepo options works as well.
 
 
 qvm-block
@@ -471,18 +755,18 @@ Force read-only mode
 Fail when device already connected to other VM
 
 
-qvm-backup
+qvm-create
 ==========
 
 NAME
 ----
 
-qvm-backup
+qvm-create - creates a new VM
 
 SYNOPSIS
 --------
 
-qvm-backup [options] \<backup-dir-path\>
+qvm-create [options] \<vm-name\>
 
 OPTIONS
 -------
@@ -490,60 +774,47 @@ OPTIONS
 -h, --help  
 Show this help message and exit
 
--x EXCLUDE\_LIST, --exclude=EXCLUDE\_LIST  
-Exclude the specified VM from backup (might be repeated)
+-t TEMPLATE, --template=TEMPLATE  
+Specify the TemplateVM to use
 
+-l LABEL, --label=LABEL  
+Specify the label to use for the new VM (e.g. red, yellow, green, ...)
 
-qvm-pci
-=======
+-p, --proxy  
+Create ProxyVM
 
-NAME
-----
+-n, --net  
+Create NetVM
 
-qvm-pci - list/set VM PCI devices
+-H, --hvm  
+Create HVM (standalone, unless --template option used)
 
-SYNOPSIS
---------
+--hvm-template  
+Create HVM template
 
-qvm-pci -l [options] \<vm-name\>
-qvm-pci -a [options] \<vm-name\> \<device\>
-qvm-pci -d [options] \<vm-name\> \<device\>
+-R ROOT\_MOVE, --root-move-from=ROOT\_MOVE  
+Use provided root.img instead of default/empty one (file will be MOVED)
 
-OPTIONS
--------
+-r ROOT\_COPY, --root-copy-from=ROOT\_COPY  
+Use provided root.img instead of default/empty one (file will be COPIED)
 
--h, --help  
-Show this help message and exit
+-s, --standalone  
+Create standalone VM - independent of template
 
--l, --list  
-List VM PCI devices
+-m MEM, --mem=MEM  
+Initial memory size (in MB)
 
--a, --add  
-Add a PCI device to specified VM
+-c VCPUS, --vcpus=VCPUS  
+VCPUs count
 
--d, --delete  
-Remove a PCI device from specified VM
+-i, --internal  
+Create VM for internal use only (hidden in qubes-manager, no appmenus)
 
+--force-root  
+Force to run, even with root privileges
 
-qubes-prefs
-===========
-
-NAME
-----
-
-qubes-prefs - display system-wide Qubes settings, such as:
-
--   clock VM
--   update VM
--   default template
--   default firewallVM
--   default kernel
--   default netVM
-
-SYNOPSIS
---------
-
-qubes-prefs
+-q, --quiet  
+Be quiet
 
 
 qvm-sync-appmenus
@@ -569,93 +840,25 @@ Show this help message and exit
 Run in verbose mode
 
 
-qvm-start
-=========
+qubes-prefs
+===========
 
 NAME
 ----
 
-qvm-start - start a specified VM
+qubes-prefs - display system-wide Qubes settings, such as:
+
+-   clock VM
+-   update VM
+-   default template
+-   default firewallVM
+-   default kernel
+-   default netVM
 
 SYNOPSIS
 --------
 
-qvm-start [options] \<vm-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
--q, --quiet  
-Be quiet
-
---no-guid  
-Do not start the GUId (ignored)
-
---console  
-Attach debugging console to the newly started VM
-
---dvm  
-Do actions necessary when preparing DVM image
-
---custom-config=CUSTOM\_CONFIG  
-Use custom Xen config instead of Qubes-generated one
-
-
-qubes-dom0-update
-=================
-
-NAME
-----
-
-qubes-dom0-update - update software in dom0
-
-SYNOPSIS
---------
-
-qubes-dom0-update [--clean] [--check-only] [--gui] [\<yum opts\>] [\<pkg list\>]
-
-OPTIONS
--------
-
---clean  
-Clean yum cache before doing anything
-
---check-only  
-Only check for updates (no install)
-
---gui  
-Use gpk-update-viewer for update selection
-
-\<pkg list\>  
-Download (and install if run by root) new packages in dom0 instead of updating
-
-Besides above options, when no --gui or --check-only given, all other options are passed to yum call. So for example --enablerepo/--disablerepo options works as well.
-
-
-qvm-revert-template-changes
-===========================
-
-NAME
-----
-
-qvm-revert-template-changes
-
-SYNOPSIS
---------
-
-qvm-revert-template-changes [options] \<template-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
---force  
-Do not prompt for comfirmation
+qubes-prefs
 
 
 qvm-service
@@ -732,7 +935,7 @@ Default: enabled only in AppVM
 
 Enable CUPS service. The user can disable cups in VM which do not need printing to speed up booting.
 
-cron  
+crond  
 Default: disabled
 
 Enable CRON service.
@@ -775,209 +978,6 @@ Default: disabled
 
 Enabling this service will result in an empty /etc/resolv.conf. The functionality is implemented in /usr/lib/qubes/setup-ip.
 
-
-qvm-backup-restore
-==================
-
-NAME
-----
-
-qvm-backup-restore - restores Qubes VMs from backup
-
-SYNOPSIS
---------
-
-qvm-backup-restore [options] \<backup-dir\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
---skip-broken  
-Do not restore VMs that have missing templates or netvms
-
---ignore-missing  
-Ignore missing templates or netvms, restore VMs anyway
-
---skip-conflicting  
-Do not restore VMs that are already present on the host
-
---force-root  
-Force to run, even with root privileges
-
---replace-template=REPLACE\_TEMPLATE  
-Restore VMs using another template, syntax: old-template-name:new-template-name (might be repeated)
-
--x EXCLUDE, --exclude=EXCLUDE  
-Skip restore of specified VM (might be repeated)
-
---skip-dom0-home  
-Do not restore dom0 user home dir
-
---ignore-username-mismatch  
-Ignore dom0 username mismatch while restoring homedir
-
-
-qvm-add-appvm
-=============
-
-NAME
-----
-
-qvm-add-appvm - add an already installed appvm to the Qubes DB
-
-WARNING: Noramlly you would not need this command, and you would use qvm-create instead!
-
-SYNOPSIS
---------
-
-qvm-add-appvm [options] \<appvm-name\> \<vm-template-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
--p DIR\_PATH, --path=DIR\_PATH  
-Specify path to the template directory
-
--c CONF\_FILE, --conf=CONF\_FILE  
-Specify the Xen VM .conf file to use(relative to the template dir path)
-
-
-qvm-add-template
-================
-
-NAME
-----
-
-qvm-add-template - adds an already installed template to the Qubes DB
-
-SYNOPSIS
---------
-
-qvm-add-template [options] \<vm-template-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
--p DIR\_PATH, --path=DIR\_PATH  
-Specify path to the template directory
-
--c CONF\_FILE, --conf=CONF\_FILE  
-Specify the Xen VM .conf file to use(relative to the template dir path)
-
---rpm  
-Template files have been installed by RPM
-
-
-qvm-kill
-========
-
-NAME
-----
-
-qvm-kill - kills the specified VM
-
-SYNOPSIS
---------
-
-qvm-kill [options] \<vm-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
-
-qvm-create
-==========
-
-NAME
-----
-
-qvm-create - creates a new VM
-
-SYNOPSIS
---------
-
-qvm-create [options] \<vm-name\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
--t TEMPLATE, --template=TEMPLATE  
-Specify the TemplateVM to use
-
--l LABEL, --label=LABEL  
-Specify the label to use for the new VM (e.g. red, yellow, green, ...)
-
--p, --proxy  
-Create ProxyVM
-
--n, --net  
-Create NetVM
-
--H, --hvm  
-Create HVM (standalone, unless --template option used)
-
---hvm-template  
-Create HVM template
-
--R ROOT\_MOVE, --root-move-from=ROOT\_MOVE  
-Use provided root.img instead of default/empty one (file will be MOVED)
-
--r ROOT\_COPY, --root-copy-from=ROOT\_COPY  
-Use provided root.img instead of default/empty one (file will be COPIED)
-
--s, --standalone  
-Create standalone VM - independent of template
-
--m MEM, --mem=MEM  
-Initial memory size (in MB)
-
--c VCPUS, --vcpus=VCPUS  
-VCPUs count
-
--i, --internal  
-Create VM for internal use only (hidden in qubes-manager, no appmenus)
-
---force-root  
-Force to run, even with root privileges
-
--q, --quiet  
-Be quiet
-
-
-qvm-grow-private
-================
-
-NAME
-----
-
-qvm-grow-private - increase private storage capacity of a specified VM
-
-SYNOPSIS
---------
-
-qvm-grow-private \<vm-name\> \<size\>
-
-OPTIONS
--------
-
--h, --help  
-Show this help message and exit
-
 # VM Tools
 
 qvm-run
@@ -998,23 +998,6 @@ OPTIONS
 
 --dispvm  
 Pass this option instead of vmname to start new DisposableVM
-
-
-qvm-open-in-vm
-==============
-
-NAME
-----
-
-qvm-open-in-vm - open a specified file in other VM
-
-SYNOPSIS
---------
-
-qvm-open-in-vm vmname filename
-
-OPTIONS
--------
 
 
 qvm-open-in-dvm
@@ -1052,4 +1035,21 @@ OPTIONS
 
 --without-progress  
 Don't display progress info
+
+
+qvm-open-in-vm
+==============
+
+NAME
+----
+
+qvm-open-in-vm - open a specified file in other VM
+
+SYNOPSIS
+--------
+
+qvm-open-in-vm vmname filename
+
+OPTIONS
+-------
 
